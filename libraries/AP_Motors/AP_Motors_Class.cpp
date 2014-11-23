@@ -102,6 +102,7 @@ void AP_Motors::armed(bool arm)
         _flags.slow_start_low_end = true;
     }
     AP_Notify::flags.armed = arm;
+    hal.rcout->armed(arm);
 };
 
 // set_min_throttle - sets the minimum throttle that will be sent to the engines when they're not off (i.e. to prevents issues with some motors spinning and some not at very low throttle)

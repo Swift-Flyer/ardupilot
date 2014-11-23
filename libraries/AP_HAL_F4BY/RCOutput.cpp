@@ -9,8 +9,10 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <stdio.h>
 
 #include <drivers/drv_pwm_output.h>
+#include <drivers/drv_canopennode.h>
 
 extern const AP_HAL::HAL& hal;
 
@@ -38,6 +40,19 @@ void F4BYRCOutput::init(void* unused)
         hal.console->printf("RCOutput: Unable to get servo count\n");        
         return;
     }
+    printf("Open can\n");
+    _can_fd = open(CANOPEN_NODE_PATH, O_RDWR);
+	if(_can_fd != -1)
+	{
+		if(ioctl(_can_fd, CANOPEN_ARM, 0) != 0)
+		{
+			hal.console->printf("RCOutput: Unable to setup CAN arming\n");
+		}
+	}
+	else
+	{
+		 hal.console->printf("RCOutput: failed to open " CANOPEN_NODE_PATH);
+	}
 
     _alt_fd = open("/dev/f4by", O_RDWR);
     if (_alt_fd == -1) {
@@ -191,6 +206,36 @@ void F4BYRCOutput::write(uint8_t ch, uint16_t* period_us, uint8_t len)
     }
 }
 
+long map(long x, long in_min, long in_max, long out_min, long out_max)
+{
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
+void F4BYRCOutput::write(uint8_t ch, uint16_t period_us, int16_t min, int16_t max)
+{
+	int16_t newVal = map(period_us, min, max, 0, 2047);
+	if(newVal != _period_can[ch])
+	{
+		_period_can[ch] = newVal;
+		_need_update = true;
+	}
+}
+
+void F4BYRCOutput::write(uint8_t ch, uint16_t* period_us, uint8_t len, int16_t min, int16_t max)
+{
+	for (uint8_t i=0; i<len; i++) {
+	    write(i, period_us[i], min, max);
+	}
+}
+
+void F4BYRCOutput::armed(bool arm)
+{
+	if(_can_fd)
+	{
+		ioctl(_can_fd, CANOPEN_ARM_ESC, arm);
+	}
+}
+
 uint16_t F4BYRCOutput::read(uint8_t ch) 
 {
     if (ch >= F4BY_NUM_OUTPUT_CHANNELS) {
@@ -231,6 +276,11 @@ void F4BYRCOutput::_timer_tick(void)
                 }
                 ::write(_alt_fd, &_period[_servo_count], n*sizeof(_period[0]));
             }
+        }
+        //TODO: move outside if(_pwm_fd != -1)
+        if(_can_fd != -1)
+        {
+        	::write(_can_fd, _period_can, _max_channel*sizeof(_period_can[0]));
         }
         perf_end(_perf_rcout);
         _last_output = now;

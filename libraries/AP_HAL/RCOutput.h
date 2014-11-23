@@ -44,6 +44,13 @@ public:
     virtual void     write(uint8_t ch, uint16_t period_us) = 0;
     virtual void     write(uint8_t ch, uint16_t* period_us, uint8_t len) = 0;
 
+    /* Output, either single channel or bulk array of channels with min/max channel values*/
+	virtual void     write(uint8_t ch, uint16_t period_us, int16_t min, int16_t max) {}
+	virtual void     write(uint8_t ch, uint16_t* period_us, uint8_t len, int16_t min, int16_t max) {}
+
+	/* Arm/Disarm esc's */
+	virtual void     armed(bool arm) {}
+
     /* Read back current output state, as either single channel or
      * array of channels. */
     virtual uint16_t read(uint8_t ch) = 0;

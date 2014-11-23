@@ -101,6 +101,7 @@ void AP_MotorsMatrix::output_min()
     for( i=0; i<AP_MOTORS_MAX_NUM_MOTORS; i++ ) {
         if( motor_enabled[i] ) {
             hal.rcout->write(pgm_read_byte(&_motor_to_channel_map[i]), _rc_throttle.radio_min);
+            hal.rcout->write(pgm_read_byte(&_motor_to_channel_map[i]), _rc_throttle.radio_min, _rc_throttle.radio_min, _rc_throttle.radio_max);
         }
     }
 }
@@ -331,6 +332,7 @@ void AP_MotorsMatrix::output_armed()
     for( i=0; i<AP_MOTORS_MAX_NUM_MOTORS; i++ ) {
         if( motor_enabled[i] ) {
             hal.rcout->write(pgm_read_byte(&_motor_to_channel_map[i]), motor_out[i]);
+            hal.rcout->write(pgm_read_byte(&_motor_to_channel_map[i]), motor_out[i], _rc_throttle.radio_min, _rc_throttle.radio_max);
         }
     }
 }

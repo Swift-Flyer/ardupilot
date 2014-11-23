@@ -147,6 +147,15 @@ else
     sh /etc/init.d/rc.error           
 fi
 
+if can_master start
+then
+	echo "Started CanOpenNode"
+else
+	echo "failed to start CanOpenNode driver"
+    echo "failed to start CanOpenNode driver" >> $logfile
+    sh /etc/init.d/rc.error
+fi
+
 echo Starting ArduPilot $deviceA $deviceC $deviceD
 if ArduPilot -d $deviceA -d2 $deviceC -d3 $deviceD start
 then
