@@ -96,3 +96,8 @@ void AP_MotorsQuad::setup_motors()
         add_motor(AP_MOTORS_MOT_4,  135, AP_MOTORS_MATRIX_YAW_FACTOR_CW,  2);
     }
 }
+
+uint8_t AP_MotorsQuad::get_motors_count()
+{
+	return 4;
+}

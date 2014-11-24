@@ -237,6 +237,29 @@ static void Log_Write_Current()
     DataFlash.Log_Write_Power();
 }
 
+struct PACKED log_ESC {
+	LOG_PACKET_HEADER;
+	uint16_t voltage;
+	uint16_t current;
+	uint8_t  temperature;
+	uint16_t rpm;
+};
+
+static void Log_Write_ESC()
+{
+	uint8_t motorsCount = motors.get_motors_count();
+	for(uint8_t i = 0; i < motorsCount; ++i) {
+		struct log_ESC pkt = {
+			LOG_PACKET_HEADER_INIT(LOG_ESCx01_MSG + i),
+			voltage : 2,
+			current : 3,
+			temperature : 4,
+			rpm : 34
+		};
+		DataFlash.WriteBlock(&pkt, sizeof(pkt));
+	}
+}
+
 struct PACKED log_Optflow {
     LOG_PACKET_HEADER;
     int16_t dx;
@@ -703,6 +726,22 @@ static const struct LogStructure log_structure[] PROGMEM = {
       "DFLT",  "Bf",         "Id,Value" },
     { LOG_ERROR_MSG, sizeof(log_Error),         
       "ERR",   "BB",         "Subsys,ECode" },
+    { LOG_ESCx01_MSG, sizeof(log_ESC),
+      "ESC1", "HHBH", "Voltage,Current,Temperature,RPM"},
+	{ LOG_ESCx02_MSG, sizeof(log_ESC),
+	  "ESC2", "HHBH", "Voltage,Current,Temperature,RPM"},
+	{ LOG_ESCx03_MSG, sizeof(log_ESC),
+	  "ESC3", "HHBH", "Voltage,Current,Temperature,RPM"},
+	{ LOG_ESCx04_MSG, sizeof(log_ESC),
+	  "ESC4", "HHBH", "Voltage,Current,Temperature,RPM"},
+	{ LOG_ESCx05_MSG, sizeof(log_ESC),
+	  "ESC5", "HHBH", "Voltage,Current,Temperature,RPM"},
+	{ LOG_ESCx06_MSG, sizeof(log_ESC),
+	  "ESC6", "HHBH", "Voltage,Current,Temperature,RPM"},
+	{ LOG_ESCx07_MSG, sizeof(log_ESC),
+	  "ESC7", "HHBH", "Voltage,Current,Temperature,RPM"},
+	{ LOG_ESCx08_MSG, sizeof(log_ESC),
+	  "ESC8", "HHBH", "Voltage,Current,Temperature,RPM"}
 };
 
 #if CLI_ENABLED == ENABLED
@@ -772,6 +811,7 @@ static void Log_Write_Data(uint8_t id, int32_t value){}
 static void Log_Write_Data(uint8_t id, uint32_t value){}
 static void Log_Write_Data(uint8_t id, float value){}
 static void Log_Write_Event(uint8_t id){}
+static void Log_Write_ESC(){}
 static void Log_Write_Optflow() {}
 static void Log_Write_Nav_Tuning() {}
 static void Log_Write_Control_Tuning() {}

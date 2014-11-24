@@ -1170,6 +1170,8 @@ static void one_hz_loop()
         Log_Write_Current();
     }
 
+    Log_Write_ESC();
+
     // perform pre-arm checks & display failures every 30 seconds
     static uint8_t pre_arm_display_counter = 15;
     pre_arm_display_counter++;

@@ -246,6 +246,15 @@ enum FlipState {
 #define LOG_AUTOTUNEDETAILS_MSG         0x1A
 #define LOG_COMPASS2_MSG                0x1B
 #define LOG_COMPASS3_MSG                0x1C
+#define LOG_ESCx01_MSG                  0xD1
+#define LOG_ESCx02_MSG                  0xD2
+#define LOG_ESCx03_MSG                  0xD3
+#define LOG_ESCx04_MSG                  0xD4
+#define LOG_ESCx05_MSG                  0xD5
+#define LOG_ESCx06_MSG                  0xD6
+#define LOG_ESCx07_MSG                  0xD7
+#define LOG_ESCx08_MSG                  0xD8
+
 
 #define MASK_LOG_ATTITUDE_FAST          (1<<0)
 #define MASK_LOG_ATTITUDE_MED           (1<<1)

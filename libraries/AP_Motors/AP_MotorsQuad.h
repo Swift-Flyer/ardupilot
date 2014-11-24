@@ -22,6 +22,8 @@ public:
     // setup_motors - configures the motors for a quad
     virtual void        setup_motors();
 
+    virtual uint8_t     get_motors_count();
+
 protected:
 
 };
