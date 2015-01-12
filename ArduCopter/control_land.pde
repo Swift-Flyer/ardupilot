@@ -61,7 +61,7 @@ static void land_gps_run()
 
 #if LAND_REQUIRE_MIN_THROTTLE_TO_DISARM == ENABLED
         // disarm when the landing detector says we've landed and throttle is at minimum
-        if (ap.land_complete && (g.rc_3.control_in == 0 || failsafe.radio)) {
+        if (ap.land_complete && (ap.throttle_zero || failsafe.radio)) {
             init_disarm_motors();
         }
 #else
@@ -112,7 +112,7 @@ static void land_gps_run()
     }
 
     // update altitude target and call position controller
-    pos_control.set_alt_target_from_climb_rate(cmb_rate, G_Dt);
+    pos_control.set_alt_target_from_climb_rate(cmb_rate, G_Dt, true);
     pos_control.update_z_controller();
 }
 
@@ -131,7 +131,7 @@ static void land_nogps_run()
         attitude_control.set_throttle_out(0, false);
 #if LAND_REQUIRE_MIN_THROTTLE_TO_DISARM == ENABLED
         // disarm when the landing detector says we've landed and throttle is at minimum
-        if (ap.land_complete && (g.rc_3.control_in == 0 || failsafe.radio)) {
+        if (ap.land_complete && (ap.throttle_zero || failsafe.radio)) {
             init_disarm_motors();
         }
 #else
@@ -170,7 +170,7 @@ static void land_nogps_run()
     }
 
     // call position controller
-    pos_control.set_alt_target_from_climb_rate(cmb_rate, G_Dt);
+    pos_control.set_alt_target_from_climb_rate(cmb_rate, G_Dt, true);
     pos_control.update_z_controller();
 }
 

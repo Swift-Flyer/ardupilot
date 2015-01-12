@@ -394,6 +394,7 @@ static union {
         uint8_t motor_test          : 1; // 16  // true if we are currently performing the motors test
         uint8_t initialised         : 1; // 17  // true once the init_ardupilot function has completed.  Extended status to GCS is not sent until this completes
         uint8_t land_complete_maybe : 1; // 18  // true if we may have landed (less strict version of land_complete)
+        uint8_t throttle_zero       : 1; // 19  // true if the throttle stick is at zero, debounced
     };
     uint32_t value;
 } ap;
@@ -801,7 +802,7 @@ static const AP_Scheduler::Task scheduler_tasks[] PROGMEM = {
     { arm_motors_check,     40,      1 },
     { auto_trim,            40,     14 },
     { update_altitude,      40,    100 },
-    { run_nav_updates,      40,     80 },
+    { run_nav_updates,       8,     80 },
     { update_thr_cruise,    40,     10 },
     { three_hz_loop,       133,      9 },
     { compass_accumulate,    8,     42 },
@@ -869,7 +870,7 @@ static const AP_Scheduler::Task scheduler_tasks[] PROGMEM = {
     { arm_motors_check,     10,      10 },
     { auto_trim,            10,     140 },
     { update_altitude,      10,    1000 },
-    { run_nav_updates,      10,     800 },
+    { run_nav_updates,       4,     800 },
     { update_thr_cruise,     1,      50 },
     { three_hz_loop,        33,      90 },
     { compass_accumulate,    2,     420 },
