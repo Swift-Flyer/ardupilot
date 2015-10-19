@@ -57,6 +57,7 @@ MODULES         += systemcmds/auth
 #
 # Libraries
 #
+LIBRARIES	+= lib/mathlib/CMSIS
 MODULES		+= modules/systemlib
 MODULES		+= modules/systemlib/mixer
 MODULES		+= modules/uORB

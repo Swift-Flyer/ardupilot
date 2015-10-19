@@ -22,6 +22,7 @@
 #include "Storage.h"
 #include "RCOutput.h"
 #include "RCInput.h"
+#include <AP_Scheduler.h>
 
 using namespace F4BY;
 
@@ -35,7 +36,7 @@ F4BYScheduler::F4BYScheduler() :
 	_perf_delay(perf_alloc(PC_ELAPSED, "APM_delay"))
 {}
 
-void F4BYScheduler::init(void *unused) 
+void F4BYScheduler::init(void *unused)
 {
     _sketch_start_time = hrt_absolute_time();
 
@@ -75,20 +76,30 @@ void F4BYScheduler::init(void *unused)
 	pthread_create(&_io_thread_ctx, &thread_attr, (pthread_startroutine_t)&F4BY::F4BYScheduler::_io_thread, this);
 }
 
-uint32_t F4BYScheduler::micros() 
+uint64_t F4BYScheduler::micros64()
+{
+    return hrt_absolute_time();
+}
+
+uint64_t F4BYScheduler::millis64()
+{
+    return micros64() / 1000;
+}
+
+uint32_t F4BYScheduler::micros()
 {
     return (uint32_t)(hrt_absolute_time() - _sketch_start_time);
 }
 
-uint32_t F4BYScheduler::millis() 
+uint32_t F4BYScheduler::millis()
 {
-    return hrt_absolute_time() / 1000;
+    return millis64() & 0xFFFFFFFF;
 }
 
 /**
    delay for a specified number of microseconds using a semaphore wait
  */
-void F4BYScheduler::delay_microseconds_semaphore(uint16_t usec) 
+void F4BYScheduler::delay_microseconds_semaphore(uint16_t usec)
 {
     sem_t wait_semaphore;
     struct hrt_call wait_call;
@@ -97,7 +108,7 @@ void F4BYScheduler::delay_microseconds_semaphore(uint16_t usec)
     sem_wait(&wait_semaphore);
 }
 
-void F4BYScheduler::delay_microseconds(uint16_t usec) 
+void F4BYScheduler::delay_microseconds(uint16_t usec)
 {
     perf_begin(_perf_delay);
     if (usec >= 500) {
@@ -105,9 +116,9 @@ void F4BYScheduler::delay_microseconds(uint16_t usec)
         perf_end(_perf_delay);
         return;
     }
-	uint32_t start = micros();
-    uint32_t dt;
-	while ((dt=(micros() - start)) < usec) {
+	uint64_t start = micros64();
+    uint64_t dt;
+	while ((dt=(micros64() - start)) < usec) {
 		up_udelay(usec - dt);
 	}
     perf_end(_perf_delay);
@@ -120,9 +131,9 @@ void F4BYScheduler::delay(uint16_t ms)
         return;
     }
     perf_begin(_perf_delay);
-	uint64_t start = hrt_absolute_time();
+	uint64_t start = micros64();
     
-    while ((hrt_absolute_time() - start)/1000 < ms && 
+    while ((micros64() - start)/1000 < ms && 
            !_f4by_thread_should_exit) {
         delay_microseconds_semaphore(1000);
         if (_min_delay_cb_ms <= ms) {
@@ -144,7 +155,7 @@ void F4BYScheduler::register_delay_callback(AP_HAL::Proc proc,
     _min_delay_cb_ms = min_time_ms;
 }
 
-void F4BYScheduler::register_timer_process(AP_HAL::MemberProc proc) 
+void F4BYScheduler::register_timer_process(AP_HAL::MemberProc proc)
 {
     for (uint8_t i = 0; i < _num_timer_procs; i++) {
         if (_timer_proc[i] == proc) {
@@ -160,7 +171,7 @@ void F4BYScheduler::register_timer_process(AP_HAL::MemberProc proc)
     }
 }
 
-void F4BYScheduler::register_io_process(AP_HAL::MemberProc proc) 
+void F4BYScheduler::register_io_process(AP_HAL::MemberProc proc)
 {
     for (uint8_t i = 0; i < _num_io_procs; i++) {
         if (_io_proc[i] == proc) {
@@ -176,17 +187,17 @@ void F4BYScheduler::register_io_process(AP_HAL::MemberProc proc)
     }
 }
 
-void F4BYScheduler::register_timer_failsafe(AP_HAL::Proc failsafe, uint32_t period_us) 
+void F4BYScheduler::register_timer_failsafe(AP_HAL::Proc failsafe, uint32_t period_us)
 {
     _failsafe = failsafe;
 }
 
-void F4BYScheduler::suspend_timer_procs() 
+void F4BYScheduler::suspend_timer_procs()
 {
     _timer_suspended = true;
 }
 
-void F4BYScheduler::resume_timer_procs() 
+void F4BYScheduler::resume_timer_procs()
 {
     _timer_suspended = false;
     if (_timer_event_missed == true) {
@@ -195,7 +206,7 @@ void F4BYScheduler::resume_timer_procs()
     }
 }
 
-void F4BYScheduler::reboot(bool hold_in_bootloader) 
+void F4BYScheduler::reboot(bool hold_in_bootloader)
 {
 	systemreset(hold_in_bootloader);
 }
@@ -229,8 +240,11 @@ void F4BYScheduler::_run_timers(bool called_from_timer_thread)
     _in_timer_proc = false;
 }
 
+extern bool f4by_ran_overtime;
+
 void *F4BYScheduler::_timer_thread(void)
 {
+    uint32_t last_ran_overtime = 0;
     while (!_hal_initialized) {
         poll(NULL, 0, 1);        
     }
@@ -247,6 +261,12 @@ void *F4BYScheduler::_timer_thread(void)
 
         // process any pending RC input requests
         ((F4BYRCInput *)hal.rcin)->_timer_tick();
+
+        if (f4by_ran_overtime && millis() - last_ran_overtime > 2000) {
+            last_ran_overtime = millis();
+            printf("Overtime in task %d\n", (int)AP_Scheduler::current_task);
+            hal.console->printf("Overtime in task %d\n", (int)AP_Scheduler::current_task);
+        }
     }
     return NULL;
 }
@@ -283,6 +303,7 @@ void *F4BYScheduler::_uart_thread(void)
         ((F4BYUARTDriver *)hal.uartB)->_timer_tick();
         ((F4BYUARTDriver *)hal.uartC)->_timer_tick();
         ((F4BYUARTDriver *)hal.uartD)->_timer_tick();
+        ((F4BYUARTDriver *)hal.uartE)->_timer_tick();
     }
     return NULL;
 }
@@ -306,7 +327,7 @@ void *F4BYScheduler::_io_thread(void)
     return NULL;
 }
 
-void F4BYScheduler::panic(const prog_char_t *errormsg) 
+void F4BYScheduler::panic(const prog_char_t *errormsg)
 {
     write(1, errormsg, strlen(errormsg));
     write(1, "\n", 1);
@@ -315,7 +336,7 @@ void F4BYScheduler::panic(const prog_char_t *errormsg)
     exit(1);
 }
 
-bool F4BYScheduler::in_timerprocess() 
+bool F4BYScheduler::in_timerprocess()
 {
     return getpid() != _main_task_pid;
 }
