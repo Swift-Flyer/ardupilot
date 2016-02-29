@@ -13,6 +13,7 @@
 #include <AP_HAL_Linux/AP_HAL_Linux.h>
 #include <AP_HAL_FLYMAPLE/AP_HAL_FLYMAPLE.h>
 #include <AP_HAL_PX4/AP_HAL_PX4.h>
+#include <AP_HAL_F4BY/AP_HAL_F4BY.h>
 #include <AP_HAL_Empty/AP_HAL_Empty.h>
 #include <AP_Math/AP_Math.h>
 #include <AP_Param/AP_Param.h>

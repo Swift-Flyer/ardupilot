@@ -271,7 +271,7 @@ void AP_Baro::init(void)
         return;
     }
 
-#if HAL_BARO_DEFAULT == HAL_BARO_PX4 || HAL_BARO_DEFAULT == HAL_BARO_VRBRAIN
+#if HAL_BARO_DEFAULT == HAL_BARO_PX4 || HAL_BARO_DEFAULT == HAL_BARO_VRBRAIN || HAL_BARO_DEFAULT == HAL_BARO_F4BY
     drivers[0] = new AP_Baro_PX4(*this);
     _num_drivers = 1;
 #elif HAL_BARO_DEFAULT == HAL_BARO_HIL

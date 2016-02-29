@@ -20,6 +20,7 @@
 #include <AP_HAL_SITL/AP_HAL_SITL.h>
 #include <AP_HAL_Linux/AP_HAL_Linux.h>
 #include <AP_HAL_PX4/AP_HAL_PX4.h>
+#include <AP_HAL_F4BY/AP_HAL_F4BY.h>
 #include <AP_HAL_Empty/AP_HAL_Empty.h>
 #include <AP_HAL_FLYMAPLE/AP_HAL_FLYMAPLE.h>
 #include <AP_Notify/AP_Notify.h>          // Notify library
@@ -36,7 +37,7 @@
 
 const AP_HAL::HAL& hal = AP_HAL_BOARD_DRIVER;
 
-#if CONFIG_HAL_BOARD == HAL_BOARD_PX4
+#if CONFIG_HAL_BOARD == HAL_BOARD_PX4 ||  CONFIG_HAL_BOARD == HAL_BOARD_F4BY
 static ToshibaLED_PX4 toshiba_led;
 #else
 static ToshibaLED_I2C toshiba_led;

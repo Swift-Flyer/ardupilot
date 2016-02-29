@@ -28,6 +28,10 @@
 #define RELAY1_PIN_DEFAULT 33
 #define RELAY2_PIN_DEFAULT -1
 #else
+#elif CONFIG_HAL_BOARD == HAL_BOARD_F4BY
+#define RELAY1_PIN_DEFAULT -1
+#define RELAY2_PIN_DEFAULT -1
+#else
 // no relay for this board
 #define RELAY1_PIN_DEFAULT -1
 #define RELAY2_PIN_DEFAULT -1

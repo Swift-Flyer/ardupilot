@@ -14,6 +14,7 @@
 #include <AP_HAL_FLYMAPLE/AP_HAL_FLYMAPLE.h>
 #include <AP_HAL_Empty/AP_HAL_Empty.h>
 #include <AP_HAL_VRBRAIN/AP_HAL_VRBRAIN.h>
+#include <AP_HAL_F4BY/AP_HAL_F4BY.h>
 
 #include <AP_Math/AP_Math.h>    // ArduPilot Mega Vector/Matrix math Library
 #include <AP_Declination/AP_Declination.h>

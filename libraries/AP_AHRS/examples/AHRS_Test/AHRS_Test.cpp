@@ -38,6 +38,7 @@
 #include <AP_HAL_Empty/AP_HAL_Empty.h>
 #include <AP_HAL_Linux/AP_HAL_Linux.h>
 #include <AP_HAL_PX4/AP_HAL_PX4.h>
+#include <AP_HAL_PX4/AP_HAL_F4BY.h>
 #include <AP_BattMonitor/AP_BattMonitor.h>
 #include <AP_SerialManager/AP_SerialManager.h>
 #include <RC_Channel/RC_Channel.h>

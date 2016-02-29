@@ -12,6 +12,7 @@
 #include <AP_HAL_SITL/AP_HAL_SITL.h>
 #include <AP_HAL_Linux/AP_HAL_Linux.h>
 #include <AP_HAL_PX4/AP_HAL_PX4.h>
+#include <AP_HAL_F4BY/AP_HAL_F4BY.h>
 #include <AP_HAL_Empty/AP_HAL_Empty.h>
 #include <AP_Math/AP_Math.h>
 #include <AP_Param/AP_Param.h>
@@ -39,7 +40,7 @@
 #include <AP_RangeFinder/AP_RangeFinder.h>
 #include <AP_Rally/AP_Rally.h>
 
-#if CONFIG_HAL_BOARD == HAL_BOARD_PX4
+#if CONFIG_HAL_BOARD == HAL_BOARD_PX4 || CONFIG_HAL_BOARD == HAL_BOARD_F4BY
 
 #include <drivers/drv_accel.h>
 #include <drivers/drv_hrt.h>

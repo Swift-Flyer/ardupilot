@@ -18,6 +18,7 @@
 #define HAL_BOARD_FLYMAPLE 6
 #define HAL_BOARD_LINUX    7
 #define HAL_BOARD_VRBRAIN  8
+#define HAL_BOARD_VRBRAIN  9
 #define HAL_BOARD_EMPTY    99
 
 // default board subtype is -1
@@ -55,6 +56,11 @@
 #define HAL_BOARD_SUBTYPE_VRUBRAIN_V51   4003
 #define HAL_BOARD_SUBTYPE_VRUBRAIN_V52   4004
 
+/**
+   HAL F4BY sub-types, starting at 5000
+ */
+#define HAL_BOARD_SUBTYPE_F4BY         5000
+
 // InertialSensor driver types
 #define HAL_INS_OILPAN  1
 #define HAL_INS_MPU60XX_SPI 2
@@ -67,7 +73,7 @@
 #define HAL_INS_MPU9250  9
 #define HAL_INS_L3GD20   10
 #define HAL_INS_LSM9DS0 11
-
+#define HAL_INS_F4BY     12
 // barometer driver types
 #define HAL_BARO_BMP085     1
 #define HAL_BARO_MS5611     2
@@ -76,6 +82,7 @@
 #define HAL_BARO_PX4        5
 #define HAL_BARO_HIL        6
 #define HAL_BARO_VRBRAIN    7
+#define HAL_BARO_F4BY       8
 
 // compass driver types
 #define HAL_COMPASS_HMC5843   1
@@ -84,6 +91,7 @@
 #define HAL_COMPASS_VRBRAIN   4
 #define HAL_COMPASS_AK8963_MPU9250 5
 #define HAL_COMPASS_AK8963_I2C  6
+#define HAL_COMPASS_F4BY   8
 
 /**
    CPU classes, used to select if CPU intensive algorithms should be used
@@ -191,6 +199,21 @@
 #define CONFIG_HAL_BOARD_SUBTYPE HAL_BOARD_SUBTYPE_PX4_V2
 #define HAL_STORAGE_SIZE            16384
 #endif
+
+#elif CONFIG_HAL_BOARD == HAL_BOARD_F4BY
+#define AP_HAL_BOARD_DRIVER AP_HAL_F4BY
+#define HAL_BOARD_NAME "F4BY"
+#define HAL_CPU_CLASS HAL_CPU_CLASS_150
+#define HAL_OS_POSIX_IO 1
+#define HAL_BOARD_LOG_DIRECTORY "/fs/microsd/APM/LOGS"
+#define HAL_BOARD_TERRAIN_DIRECTORY "/fs/microsd/APM/TERRAIN"
+#define HAL_PARAM_DEFAULTS_PATH "/etc/defaults.parm"
+#define HAL_INS_DEFAULT HAL_INS_F4BY
+#define HAL_BARO_DEFAULT HAL_BARO_F4BY
+#define HAL_COMPASS_DEFAULT HAL_COMPASS_F4BY
+#define HAL_SERIAL0_BAUD_DEFAULT 115200
+#define CONFIG_HAL_BOARD_SUBTYPE HAL_BOARD_SUBTYPE_NONE
+#define HAL_STORAGE_SIZE            8192
 
 #elif CONFIG_HAL_BOARD == HAL_BOARD_LINUX
 #define AP_HAL_BOARD_DRIVER AP_HAL_Linux

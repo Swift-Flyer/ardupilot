@@ -11,6 +11,7 @@
 #include <AP_HAL_AVR/AP_HAL_AVR.h>
 #include <AP_HAL_Linux/AP_HAL_Linux.h>
 #include <AP_HAL_PX4/AP_HAL_PX4.h>
+#include <AP_HAL_F4BY/AP_HAL_F4BY.h>
 #include <AP_HAL_Empty/AP_HAL_Empty.h>
 #include <AP_Notify/AP_Notify.h>          // Notify library
 #include <AP_Notify/AP_BoardLED.h>        // Board LED library

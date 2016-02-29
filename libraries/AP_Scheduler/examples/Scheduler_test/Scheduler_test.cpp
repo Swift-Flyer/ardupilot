@@ -39,6 +39,7 @@
 #include <AP_HAL_SITL/AP_HAL_SITL.h>
 #include <AP_HAL_Empty/AP_HAL_Empty.h>
 #include <AP_HAL_PX4/AP_HAL_PX4.h>
+#include <AP_HAL_F4BY/AP_HAL_F4BY.h>
 
 const AP_HAL::HAL& hal = AP_HAL_BOARD_DRIVER;
 

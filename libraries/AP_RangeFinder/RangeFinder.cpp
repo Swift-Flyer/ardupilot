@@ -260,7 +260,7 @@ void RangeFinder::update(void)
 void RangeFinder::detect_instance(uint8_t instance)
 {
     uint8_t type = _type[instance];
-#if CONFIG_HAL_BOARD == HAL_BOARD_PX4 || CONFIG_HAL_BOARD == HAL_BOARD_VRBRAIN
+#if CONFIG_HAL_BOARD == HAL_BOARD_PX4 || CONFIG_HAL_BOARD == HAL_BOARD_VRBRAIN || CONFIG_HAL_BOARD == HAL_BOARD_F4BY
     if (type == RangeFinder_TYPE_PLI2C || 
         type == RangeFinder_TYPE_MBI2C) {
         // I2C sensor types are handled by the PX4Firmware code
@@ -281,7 +281,7 @@ void RangeFinder::detect_instance(uint8_t instance)
             return;
         }
     }
-#if CONFIG_HAL_BOARD == HAL_BOARD_PX4  || CONFIG_HAL_BOARD == HAL_BOARD_VRBRAIN
+#if CONFIG_HAL_BOARD == HAL_BOARD_PX4  || CONFIG_HAL_BOARD == HAL_BOARD_VRBRAIN || CONFIG_HAL_BOARD == HAL_BOARD_F4BY
     if (type == RangeFinder_TYPE_PX4) {
         if (AP_RangeFinder_PX4::detect(*this, instance)) {
             state[instance].instance = instance;

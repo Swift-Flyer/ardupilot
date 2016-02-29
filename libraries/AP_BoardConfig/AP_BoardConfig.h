@@ -30,7 +30,7 @@ private:
     AP_Int8 _safety_enable;
     AP_Int8 _sbus_out_enable;
 #endif
-#if CONFIG_HAL_BOARD == HAL_BOARD_VRBRAIN
+#if CONFIG_HAL_BOARD == HAL_BOARD_VRBRAIN || CONFIG_HAL_BOARD == HAL_BOARD_F4BY
 
 #endif
 };

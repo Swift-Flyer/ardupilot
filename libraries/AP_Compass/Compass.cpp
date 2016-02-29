@@ -356,7 +356,7 @@ Compass::_detect_backends(void)
     _add_backend(AP_Compass_HMC5843::detect);
 #elif  HAL_COMPASS_DEFAULT == HAL_COMPASS_AK8963_I2C && HAL_INS_AK8963_I2C_BUS == 1
     _add_backend(AP_Compass_AK8963::detect_i2c1);
-#elif HAL_COMPASS_DEFAULT == HAL_COMPASS_PX4 || HAL_COMPASS_DEFAULT == HAL_COMPASS_VRBRAIN
+#elif HAL_COMPASS_DEFAULT == HAL_COMPASS_PX4 || HAL_COMPASS_DEFAULT == HAL_COMPASS_VRBRAIN || HAL_COMPASS_DEFAULT == HAL_COMPASS_F4BY
     _add_backend(AP_Compass_PX4::detect);
 #else
     #error Unrecognised HAL_COMPASS_TYPE setting

@@ -253,7 +253,7 @@ bool AP_Arming::compass_checks(bool report)
 
 #if CONFIG_HAL_BOARD == HAL_BOARD_APM1 || CONFIG_HAL_BOARD == HAL_BOARD_APM2
 # define COMPASS_MAGFIELD_EXPECTED     330        // pre arm will fail if mag field > 544 or < 115
-#else // PX4, SITL
+#else // PX4, SITL, F4BY
 #define COMPASS_MAGFIELD_EXPECTED      530        // pre arm will fail if mag field > 874 or < 185
 #endif
 

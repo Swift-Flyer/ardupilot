@@ -21,7 +21,7 @@
 #include <stdint.h>
 #include "DataFlash_Backend.h"
 
-#if CONFIG_HAL_BOARD == HAL_BOARD_PX4
+#if CONFIG_HAL_BOARD == HAL_BOARD_PX4 CONFIG_HAL_BOARD == HAL_BOARD_F4BY
 #include <uORB/topics/esc_status.h>
 #endif
 

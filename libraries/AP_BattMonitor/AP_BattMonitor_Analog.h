@@ -44,7 +44,11 @@
  # define AP_BATT_CURR_PIN                  12
  # define AP_BATT_VOLTDIVIDER_DEFAULT       10.1f
  # define AP_BATT_CURR_AMP_PERVOLT_DEFAULT  17.0f
-
+#elif CONFIG_HAL_BOARD == HAL_BOARD_F4BY
+ # define AP_BATT_VOLT_PIN                  13
+ # define AP_BATT_CURR_PIN                  12
+ # define AP_BATT_VOLTDIVIDER_DEFAULT       1.1f
+ # define AP_BATT_CURR_AMP_PERVOLT_DEFAULT  17.0f
 #elif CONFIG_HAL_BOARD == HAL_BOARD_VRBRAIN
 #if defined(CONFIG_ARCH_BOARD_VRBRAIN_V45) || defined(CONFIG_ARCH_BOARD_VRBRAIN_V51) || defined(CONFIG_ARCH_BOARD_VRBRAIN_V52)
  # define AP_BATT_VOLT_PIN                  10

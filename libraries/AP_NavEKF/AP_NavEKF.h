@@ -35,7 +35,7 @@
 
 #include <AP_Math/vectorN.h>
 
-#if CONFIG_HAL_BOARD == HAL_BOARD_PX4 || CONFIG_HAL_BOARD == HAL_BOARD_VRBRAIN
+#if CONFIG_HAL_BOARD == HAL_BOARD_PX4 || CONFIG_HAL_BOARD == HAL_BOARD_VRBRAIN || CONFIG_HAL_BOARD == HAL_BOARD_F4BY
 #include <systemlib/perf_counter.h>
 #endif
 
@@ -836,7 +836,7 @@ private:
     // string representing last reason for prearm failure
     char prearm_fail_string[40];
 
-#if CONFIG_HAL_BOARD == HAL_BOARD_PX4 || CONFIG_HAL_BOARD == HAL_BOARD_VRBRAIN
+#if CONFIG_HAL_BOARD == HAL_BOARD_PX4 || CONFIG_HAL_BOARD == HAL_BOARD_VRBRAIN || CONFIG_HAL_BOARD == HAL_BOARD_F4BY
     // performance counters
     perf_counter_t  _perf_UpdateFilter;
     perf_counter_t  _perf_CovariancePrediction;
@@ -855,7 +855,7 @@ private:
     float InitialGyroBiasUncertainty(void) const;
 };
 
-#if CONFIG_HAL_BOARD != HAL_BOARD_PX4 && CONFIG_HAL_BOARD != HAL_BOARD_VRBRAIN
+#if CONFIG_HAL_BOARD != HAL_BOARD_PX4 && CONFIG_HAL_BOARD != HAL_BOARD_VRBRAIN && CONFIG_HAL_BOARD != HAL_BOARD_F4BY
 #define perf_begin(x)
 #define perf_end(x)
 #endif

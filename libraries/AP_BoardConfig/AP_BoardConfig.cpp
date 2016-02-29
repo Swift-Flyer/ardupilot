@@ -37,7 +37,7 @@
 #define BOARD_PWM_COUNT_DEFAULT 4
 #define BOARD_SER1_RTSCTS_DEFAULT 2
 #endif
-#elif CONFIG_HAL_BOARD == HAL_BOARD_VRBRAIN
+#elif CONFIG_HAL_BOARD == HAL_BOARD_VRBRAIN || CONFIG_HAL_BOARD == HAL_BOARD_F4BY
 
 #endif
 
@@ -75,7 +75,7 @@ const AP_Param::GroupInfo AP_BoardConfig::var_info[] PROGMEM = {
     // @Description: Enabling this option on a Pixhawk enables SBUS servo output from the SBUS output connector
     // @Values: 0:Disabled,1:Enabled
     AP_GROUPINFO("SBUS_OUT",   4, AP_BoardConfig, _sbus_out_enable, 0),
-#elif CONFIG_HAL_BOARD == HAL_BOARD_VRBRAIN
+#elif CONFIG_HAL_BOARD == HAL_BOARD_VRBRAIN || CONFIG_HAL_BOARD == HAL_BOARD_F4BY
 #endif
 
     // @Param: SERIAL_NUM

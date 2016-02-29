@@ -17,7 +17,7 @@
 #ifndef __OREOLED_PX4_H__
 #define __OREOLED_PX4_H__
 
-#if CONFIG_HAL_BOARD == HAL_BOARD_PX4
+#if CONFIG_HAL_BOARD == HAL_BOARD_PX4 || CONFIG_HAL_BOARD == HAL_BOARD_F4BY
 
 #include <AP_HAL/AP_HAL.h>
 #include "NotifyDevice.h"

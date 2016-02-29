@@ -8,6 +8,7 @@
 #include <AP_HAL/AP_HAL.h>
 #include <AP_HAL_AVR/AP_HAL_AVR.h>
 #include <AP_HAL_PX4/AP_HAL_PX4.h>
+#include <AP_HAL_F4BY/AP_HAL_D4BY.h>
 #include <AP_HAL_FLYMAPLE/AP_HAL_FLYMAPLE.h>
 #include <AP_Param/AP_Param.h>
 #include <StorageManager/StorageManager.h>
