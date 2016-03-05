@@ -295,7 +295,7 @@
 #endif
 
 // max compass offset length (i.e. sqrt(offs_x^2+offs_y^2+offs_Z^2))
-#ifndef CONFIG_ARCH_BOARD_PX4FMU_V1 || CONFIG_ARCH_BOARD_F4BYFMU
+#ifndef CONFIG_ARCH_BOARD_PX4FMU_V1 
  #ifndef COMPASS_OFFSETS_MAX
   # define COMPASS_OFFSETS_MAX          600         // PX4 onboard compass has high offsets
  #endif

@@ -18,7 +18,7 @@
 #define HAL_BOARD_FLYMAPLE 6
 #define HAL_BOARD_LINUX    7
 #define HAL_BOARD_VRBRAIN  8
-#define HAL_BOARD_VRBRAIN  9
+#define HAL_BOARD_F4BY	   9
 #define HAL_BOARD_EMPTY    99
 
 // default board subtype is -1
