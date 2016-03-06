@@ -40,7 +40,7 @@ EXTRAFLAGS += -DNUTTX_GIT_VERSION="\"$(NUTTX_GIT_VERSION)\""
 EXTRAFLAGS += -DPX4_GIT_VERSION="\"$(PX4_GIT_VERSION)\""
 EXTRAFLAGS += -DUAVCAN=1
 
-# we have different config files for V1 and V2
+# we have different config files for F4BY
 F4BY_CONFIG_FILE=$(MK_DIR)/F4BY/config_f4by_APM.mk
 
 
