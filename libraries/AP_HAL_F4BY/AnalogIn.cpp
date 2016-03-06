@@ -256,8 +256,8 @@ void F4BYAnalogIn::_timer_tick(void)
     if (ret > 0) {
         // match the incoming channels to the currently active pins
         for (uint8_t i=0; i<ret/sizeof(buf_adc[0]); i++) {
-        if (i == 13) buf_adc[i].am_channel == 100;
-        if (i == 10) buf_adc[i].am_channel == 103;
+        #//if (i == 13) buf_adc[i].am_channel == 100;
+        //if (i == 10) buf_adc[i].am_channel == 103;
         }
         for (uint8_t i=0; i<ret/sizeof(buf_adc[0]); i++) {
             Debug("chan %u value=%u\n",

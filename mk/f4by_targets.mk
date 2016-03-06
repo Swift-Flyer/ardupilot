@@ -84,7 +84,7 @@ module_mk:
 f4by: $(BUILDROOT)/make.flags CHECK_MODULES $(PX4_ROOT)/Archives/f4by.export $(SKETCHCPP) module_mk
 	$(RULEHDR)
 	$(v) rm -f $(PX4_ROOT)/makefiles/$(F4BY_CONFIG_FILE)
-	$(v) cp $(PWD)/$(F4BY_CONFIG_FILE) $(PX4_ROOT)/makefiles/
+	$(v) cp $(F4BY_CONFIG_FILE) $(PX4_ROOT)/makefiles/nuttx/
 	$(v) $(F4BY_MAKE) f4by_APM
 	$(v) /bin/rm -f $(SKETCH)-f4by.px4
 	$(v) cp $(PX4_ROOT)/Images/f4by_APM.px4 $(SKETCH)-f4by.px4
