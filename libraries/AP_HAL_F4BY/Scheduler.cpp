@@ -82,7 +82,7 @@ void F4BYScheduler::init(void *unused)
     (void)pthread_attr_setschedparam(&thread_attr, &param);
     pthread_attr_setschedpolicy(&thread_attr, SCHED_FIFO);
 
-    pthread_create(&_storage_thread_ctx, &thread_attr, (pthread_startroutine_t)&PX4::PX4Scheduler::_storage_thread, this);
+    pthread_create(&_storage_thread_ctx, &thread_attr, (pthread_startroutine_t)&F4BY::F4BYScheduler::_storage_thread, this);
 }
 
 uint64_t F4BYScheduler::micros64() 
@@ -242,7 +242,7 @@ void F4BYScheduler::resume_timer_procs()
 
 void F4BYScheduler::reboot(bool hold_in_bootloader) 
 {
-	f4by_systemreset(hold_in_bootloader);
+	px4_systemreset(hold_in_bootloader);
 }
 
 void F4BYScheduler::_run_timers(bool called_from_timer_thread)
@@ -274,7 +274,7 @@ void F4BYScheduler::_run_timers(bool called_from_timer_thread)
     _in_timer_proc = false;
 }
 
-extern bool px4_ran_overtime;
+extern bool f4by_ran_overtime;
 
 void *F4BYScheduler::_timer_thread(void)
 {
@@ -357,17 +357,17 @@ void *F4BYScheduler::_io_thread(void)
     return NULL;
 }
 
-void *PX4Scheduler::_storage_thread(void)
+void *F4BYScheduler::_storage_thread(void)
 {
     while (!_hal_initialized) {
         poll(NULL, 0, 1);        
     }
-    while (!_px4_thread_should_exit) {
+    while (!_f4by_thread_should_exit) {
         poll(NULL, 0, 10);
 
         // process any pending storage writes
         perf_begin(_perf_storage_timer);
-        ((PX4Storage *)hal.storage)->_timer_tick();
+        ((F4BYStorage *)hal.storage)->_timer_tick();
         perf_end(_perf_storage_timer);
     }
     return NULL;

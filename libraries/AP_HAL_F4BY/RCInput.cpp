@@ -119,7 +119,11 @@ void F4BYRCInput::_timer_tick(void)
 
 bool F4BYRCInput::rc_bind(int dsmMode)
 {
-   
+    int fd = open("/dev/px4io", 0);
+    if (fd == -1) {
+        hal.console->printf("RCInput: failed to open /dev/px4io\n");
+        return false;
+    }
     
     uint32_t mode = (dsmMode == 0) ? DSM2_BIND_PULSES : ((dsmMode == 1) ? DSMX_BIND_PULSES : DSMX8_BIND_PULSES);
     int ret = ioctl(fd, DSM_BIND_START, mode);

@@ -221,7 +221,7 @@ void HAL_F4BY::init(int argc, char * const argv[]) const
                    SKETCHNAME, deviceA, deviceC, deviceD);
 
             _f4by_thread_should_exit = false;
-            daemon_task = f4by_task_spawn_cmd(SKETCHNAME,
+            daemon_task = px4_task_spawn_cmd(SKETCHNAME,
                                      SCHED_FIFO,
                                      APM_MAIN_PRIORITY,
                                      APM_MAIN_THREAD_STACK_SIZE,

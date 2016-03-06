@@ -52,17 +52,9 @@ void F4BYGPIO::init()
     if (_gpio_fmu_fd == -1) {
         hal.scheduler->panic("Unable to open GPIO");
     }
-#ifdef CONFIG_ARCH_BOARD_F4BY
-    if (ioctl(_gpio_fmu_fd, GPIO_CLEAR, GPIO_EXT_1) != 0) {
-        hal.console->printf("GPIO: Unable to setup GPIO_1\n");
-    }
-#endif
 
-    // also try to setup for the relay pins on the IO board
-    _gpio_io_fd = open(F4BYIO_DEVICE_PATH, O_RDWR);
-    if (_gpio_io_fd == -1) {
-        hal.console->printf("GPIO: Unable to open px4io\n");
-    }
+
+    
 }
 
 void F4BYGPIO::pinMode(uint8_t pin, uint8_t output)
@@ -168,13 +160,7 @@ void F4BYGPIO::write(uint8_t pin, uint8_t value)
             }
             break;
 
-        case HAL_GPIO_B_LED_PIN:    // not used yet 
-            if (value == LOW) { 
-                ioctl(_led_fd, LED_ON, LED_GREEN);
-            } else { 
-                ioctl(_led_fd, LED_OFF, LED_GREEN);
-            }
-            break;
+        
 
         case HAL_GPIO_C_LED_PIN:    // GPS LED 
             if (value == LOW) { 
@@ -184,13 +170,7 @@ void F4BYGPIO::write(uint8_t pin, uint8_t value)
             }
             break;
 
-        case HAL_GPIO_D_LED_PIN:    // GPS LED 
-            if (value == LOW) { 
-                ioctl(_led_fd, LED_ON, LED_YELLOW);
-            } else { 
-                ioctl(_led_fd, LED_OFF, LED_YELLOW);
-            }
-            break;            
+          
 #endif
 
         case F4BY_GPIO_PIEZO_PIN:    // Piezo beeper 
