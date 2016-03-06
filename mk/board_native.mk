@@ -14,7 +14,6 @@ WARNFLAGS      +=   -Wwrite-strings -Wformat=2
 WARNFLAGSCXX    = -Wno-reorder \
 	-Werror=unused-but-set-variable
 	-Werror=format-security \
-	-Werror=array-bounds \
 	-Wfatal-errors \
 	-Werror=unused-but-set-variable \
 	-Werror=uninitialized \
