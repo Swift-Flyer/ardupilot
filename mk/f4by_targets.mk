@@ -60,7 +60,7 @@ F4BY_MAKE_ARCHIVES = make -C $(PX4_ROOT) NUTTX_SRC=$(NUTTX_SRC) CCACHE=$(CCACHE)
 HASHADDER_FLAGS += --ardupilot "$(SKETCHBOOK)"
 
 ifneq ($(wildcard $(PX4_ROOT)),)
-HASHADDER_FLAGS += --f4by "$(PX4_ROOT)"
+HASHADDER_FLAGS += --px4 "$(PX4_ROOT)"
 endif
 ifneq ($(wildcard $(NUTTX_SRC)/..),)
 HASHADDER_FLAGS += --nuttx "$(NUTTX_SRC)/.."
