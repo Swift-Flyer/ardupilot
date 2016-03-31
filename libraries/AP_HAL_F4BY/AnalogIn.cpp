@@ -180,8 +180,8 @@ void F4BYAnalogSource::_add_value(float v, float vcc5V)
 
 F4BYAnalogIn::F4BYAnalogIn() :
 	_current_stop_pin_i(0),
-	_board_voltage(0),
-    _servorail_voltage(0),
+	_board_voltage(0.999),
+    _servorail_voltage(4.999),
     _power_flags(0)
 {}
 
