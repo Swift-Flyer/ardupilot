@@ -180,8 +180,8 @@ void F4BYAnalogSource::_add_value(float v, float vcc5V)
 
 F4BYAnalogIn::F4BYAnalogIn() :
 	_current_stop_pin_i(0),
-	_board_voltage(0.999),
-    _servorail_voltage(4.999),
+	_board_voltage(0),
+    _servorail_voltage(0),
     _power_flags(0)
 {}
 
@@ -256,7 +256,14 @@ void F4BYAnalogIn::_timer_tick(void)
     if (ret > 0) {
         // match the incoming channels to the currently active pins
         for (uint8_t i=0; i<ret/sizeof(buf_adc[0]); i++) {
-        #//if (i == 13) buf_adc[i].am_channel == 100;
+        	if(buf_adc[i].am_channel == 15)
+        	{
+        		_servorail_voltage = buf_adc[i].am_data * F4BY_VOLTAGE_SCALING * 2;
+        	}
+        	else if(buf_adc[i].am_channel == 14)
+        	{
+        		_board_voltage = buf_adc[i].am_data * F4BY_VOLTAGE_SCALING * 2;
+        	}
         //if (i == 10) buf_adc[i].am_channel == 103;
         }
         for (uint8_t i=0; i<ret/sizeof(buf_adc[0]); i++) {
