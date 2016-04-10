@@ -47,7 +47,7 @@ static F4BYGPIO gpioDriver;
 #define UARTB_DEFAULT_DEVICE "/dev/ttyS0"
 #define UARTC_DEFAULT_DEVICE "/dev/ttyS1"
 #define UARTD_DEFAULT_DEVICE "/dev/ttyS3"
-#define UARTE_DEFAULT_DEVICE "/dev/null"
+#define UARTE_DEFAULT_DEVICE "/dev/ttyS2"
 
 // 3 UART drivers, for GPS plus two mavlink-enabled devices
 static F4BYUARTDriver uartADriver(UARTA_DEFAULT_DEVICE, "APM_uartA");
@@ -116,6 +116,7 @@ static int main_loop(int argc, char **argv)
     hal.uartB->begin(38400);
     hal.uartC->begin(57600);
     hal.uartD->begin(57600);
+    hal.uartE->begin(57600);
     hal.scheduler->init(NULL);
     hal.rcin->init(NULL);
     hal.rcout->init(NULL);
@@ -188,6 +189,7 @@ static void usage(void)
     printf("\t-d  DEVICE         set terminal device (default %s)\n", UARTA_DEFAULT_DEVICE);
     printf("\t-d2 DEVICE         set second terminal device (default %s)\n", UARTC_DEFAULT_DEVICE);
     printf("\t-d3 DEVICE         set 3rd terminal device (default %s)\n", UARTD_DEFAULT_DEVICE);
+    printf("\t-d4 DEVICE         set second terminal device (default %s)\n", UARTE_DEFAULT_DEVICE);
     printf("\n");
 }
 
@@ -198,6 +200,7 @@ void HAL_F4BY::init(int argc, char * const argv[]) const
     const char *deviceA = UARTA_DEFAULT_DEVICE;
     const char *deviceC = UARTC_DEFAULT_DEVICE;
     const char *deviceD = UARTD_DEFAULT_DEVICE;
+    const char *deviceE = UARTD_DEFAULT_DEVICE;
 
     if (argc < 1) {
         printf("%s: missing command (try '%s start')", 
@@ -217,8 +220,9 @@ void HAL_F4BY::init(int argc, char * const argv[]) const
             uartADriver.set_device_path(deviceA);
             uartCDriver.set_device_path(deviceC);
             uartDDriver.set_device_path(deviceD);
-            printf("Starting %s uartA=%s uartC=%s uartD=%s\n", 
-                   SKETCHNAME, deviceA, deviceC, deviceD);
+	    uartEDriver.set_device_path(deviceE);
+            printf("Starting %s uartA=%s uartC=%s uartD=%s uartE=%s\n", 
+                   SKETCHNAME, deviceA, deviceC, deviceD, deviceE );
 
             _f4by_thread_should_exit = false;
             daemon_task = px4_task_spawn_cmd(SKETCHNAME,
@@ -274,6 +278,17 @@ void HAL_F4BY::init(int argc, char * const argv[]) const
                 deviceD = strdup(argv[i+1]);
             } else {
                 printf("missing parameter to -d3 DEVICE\n");
+                usage();
+                exit(1);
+            }
+        }
+        
+        if (strcmp(argv[i], "-d4") == 0) {
+            // set uartD terminal device
+            if (argc > i + 1) {
+                deviceE = strdup(argv[i+1]);
+            } else {
+                printf("missing parameter to -d4 DEVICE\n");
                 usage();
                 exit(1);
             }
