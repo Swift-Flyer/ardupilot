@@ -56,6 +56,7 @@ fi
 
 set deviceC /dev/ttyS1
 set deviceD /dev/ttyS3
+set deviceE /dev/ttyS2
 
 if uorb start
 then
@@ -146,8 +147,8 @@ else
     sh /etc/init.d/rc.error           
 fi
 
-echo Starting ArduPilot $deviceA $deviceC $deviceD
-if ArduPilot -d $deviceA -d2 $deviceC -d3 $deviceD start
+echo Starting ArduPilot $deviceA $deviceC $deviceD $deviceE
+if ArduPilot -d $deviceA -d2 $deviceC -d3 $deviceD -d4 $deviceE start
 then
     echo ArduPilot started OK
 else
