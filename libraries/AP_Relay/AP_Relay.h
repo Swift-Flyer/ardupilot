@@ -15,7 +15,11 @@
 
 #include <AP_Param/AP_Param.h>
 
+#if CONFIG_HAL_BOARD == HAL_BOARD_F4BY
+#define AP_RELAY_NUM_RELAYS 3
+#else
 #define AP_RELAY_NUM_RELAYS 4
+#endif
 
 /// @class	AP_Relay
 /// @brief	Class to manage the APM relay

@@ -200,7 +200,7 @@ void HAL_F4BY::init(int argc, char * const argv[]) const
     const char *deviceA = UARTA_DEFAULT_DEVICE;
     const char *deviceC = UARTC_DEFAULT_DEVICE;
     const char *deviceD = UARTD_DEFAULT_DEVICE;
-    const char *deviceE = UARTD_DEFAULT_DEVICE;
+    const char *deviceE = UARTE_DEFAULT_DEVICE;
 
     if (argc < 1) {
         printf("%s: missing command (try '%s start')", 
@@ -220,7 +220,7 @@ void HAL_F4BY::init(int argc, char * const argv[]) const
             uartADriver.set_device_path(deviceA);
             uartCDriver.set_device_path(deviceC);
             uartDDriver.set_device_path(deviceD);
-	    uartEDriver.set_device_path(deviceE);
+	        uartEDriver.set_device_path(deviceE);
             printf("Starting %s uartA=%s uartC=%s uartD=%s uartE=%s\n", 
                    SKETCHNAME, deviceA, deviceC, deviceD, deviceE );
 
@@ -284,7 +284,7 @@ void HAL_F4BY::init(int argc, char * const argv[]) const
         }
         
         if (strcmp(argv[i], "-d4") == 0) {
-            // set uartD terminal device
+            // set uartE terminal device
             if (argc > i + 1) {
                 deviceE = strdup(argv[i+1]);
             } else {

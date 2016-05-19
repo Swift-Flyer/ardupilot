@@ -19,6 +19,7 @@
 #include <AP_HAL/AP_HAL.h>
 #include <AP_Notify/AP_Notify.h>
 #include "AP_GPS.h"
+#include <stdio.h>
 
 extern const AP_HAL::HAL& hal;
 
@@ -137,7 +138,15 @@ void AP_GPS::init(DataFlash_Class *dataflash, const AP_SerialManager& serial_man
     _port[1] = serial_manager.find_serial(AP_SerialManager::SerialProtocol_GPS, 1);
     _last_instance_swap_ms = 0;
 #endif
+
+    //hal.console->
+    printf("first gps initialised, instance1 is  %d %s", _port[0], "\n");
+    printf("second gps initialised, instance2 is  %d %s", _port[1], "\n");
+
 }
+
+
+
 
 // baudrates to try to detect GPSes with
 const uint32_t AP_GPS::_baudrates[] PROGMEM = {4800U, 38400U, 115200U, 57600U, 9600U, 230400U};
@@ -196,7 +205,7 @@ AP_GPS::detect_instance(uint8_t instance)
     uint32_t now = hal.scheduler->millis();
 
 #if CONFIG_HAL_BOARD == HAL_BOARD_PX4
-    if (_type[instance] == GPS_TYPE_PX4) {
+    if (_type[instance] == GPS_TYPE_PX4  )   {
         // check for explicitely chosen PX4 GPS beforehand
         // it is not possible to autodetect it, nor does it require a real UART
         hal.console->print_P(PSTR(" PX4 "));
@@ -207,6 +216,7 @@ AP_GPS::detect_instance(uint8_t instance)
 
     if (_port[instance] == NULL) {
         // UART not available
+    	printf("uart for instance  %d %s", instance , "is not availble \n");
         return;
     }
 
@@ -239,10 +249,15 @@ AP_GPS::detect_instance(uint8_t instance)
     }
 
     send_blob_update(instance);
+	//printf("send init to gps instance %d %s %d %s", instance ," baud:", pgm_read_dword(&_baudrates[dstate->last_baud]) , "\n");
+
 
     while (initblob_state[instance].remaining == 0 && _port[instance]->available() > 0
             && new_gps == NULL) {
         uint8_t data = _port[instance]->read();
+
+        //printf("received data instance %d %s %d %s", instance ," data:" , data , "\n");
+
         /*
           running a uBlox at less than 38400 will lead to packet
           corruption, as we can't receive the packets in the 200ms
@@ -330,6 +345,7 @@ AP_GPS::highest_supported_status(void) const
 void
 AP_GPS::update_instance(uint8_t instance)
 {
+
     if (_type[instance] == GPS_TYPE_HIL) {
         // in HIL, leave info alone
         return;
@@ -338,10 +354,12 @@ AP_GPS::update_instance(uint8_t instance)
         // not enabled
         state[instance].status = NO_GPS;
         state[instance].hdop = 9999;
+    	//printf("error update instance, wrong type  %d %s", instance , "\n");
         return;
     }
     if (locked_ports & (1U<<instance)) {
         // the port is locked by another driver
+    	printf("error update instance, the port is locked by another driver \n");
         return;
     }
 

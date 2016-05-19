@@ -120,9 +120,16 @@ void AP_SerialManager::init()
     state[3].uart = hal.uartB;  // serial3, uartB, normally 1st GPS
     state[4].uart = hal.uartE;  // serial4, uartE, normally 2nd GPS
 
+    printf("state c  %d %s", hal.uartC , "\n");
+    printf("state d  %d %s", hal.uartD , "\n");
+    printf("state b  %d %s", hal.uartB , "\n");
+    printf("state e  %d %s", hal.uartE , "\n");
+
     // initialise serial ports
     for (uint8_t i=1; i<SERIALMANAGER_NUM_PORTS; i++) {
         if (state[i].uart != NULL) {
+        	printf("state  %d %s %d %s", i, "protocol:", state[i].protocol ,"\n");
+
             switch (state[i].protocol) {
                 case SerialProtocol_Console:
                     state[i].uart->begin(map_baudrate(state[i].baud), 

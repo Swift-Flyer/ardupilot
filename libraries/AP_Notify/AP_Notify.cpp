@@ -19,6 +19,7 @@
 // static flags, to allow for direct class update from device drivers
 struct AP_Notify::notify_flags_type AP_Notify::flags;
 struct AP_Notify::notify_events_type AP_Notify::events;
+AP_Relay* AP_Notify::apm_relay = 0;
 
 #if CONFIG_HAL_BOARD == HAL_BOARD_PX4 || CONFIG_HAL_BOARD == HAL_BOARD_F4BY
     AP_BoardLED boardled;
@@ -64,6 +65,11 @@ struct AP_Notify::notify_events_type AP_Notify::events;
 #endif
 
 #define CONFIG_NOTIFY_DEVICES_COUNT (ARRAY_SIZE(AP_Notify::_devices))
+
+AP_Notify::AP_Notify(AP_Relay* obj_relay)
+{
+	apm_relay = obj_relay;
+}
 
 // initialisation
 void AP_Notify::init(bool enable_external_leds)

@@ -80,15 +80,20 @@
 class AP_BoardLED: public NotifyDevice
 {
 public:
+	AP_BoardLED(void);
     // initialise the LED driver
     bool init(void);
 
     // should be called at 50Hz
     void update(void);
 
+	static const struct AP_Param::GroupInfo        var_info[];
+	
 private:
     // counter incremented at 50Hz
     uint8_t _counter;
+    AP_Int8 _red_led_relay;
+    AP_Int8 _blue_led_relay;
 };
 
 #endif // __AP_HAL_BOARDLED_H__

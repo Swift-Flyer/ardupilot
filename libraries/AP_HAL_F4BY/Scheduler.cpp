@@ -337,6 +337,7 @@ void *F4BYScheduler::_uart_thread(void)
         ((F4BYUARTDriver *)hal.uartB)->_timer_tick();
         ((F4BYUARTDriver *)hal.uartC)->_timer_tick();
         ((F4BYUARTDriver *)hal.uartD)->_timer_tick();
+        ((F4BYUARTDriver *)hal.uartE)->_timer_tick();
     }
     return NULL;
 }

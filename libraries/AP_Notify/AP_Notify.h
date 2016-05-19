@@ -20,6 +20,7 @@
 
 #include <AP_Common/AP_Common.h>
 #include <GCS_MAVLink/GCS_MAVLink.h>
+#include <AP_Relay/AP_Relay.h>
 #include "AP_BoardLED.h"
 #include "ToshibaLED.h"
 #include "ToshibaLED_I2C.h"
@@ -39,6 +40,7 @@
 class AP_Notify
 {
 public:
+	AP_Notify(AP_Relay* obj_relay = 0);
     /// notify_flags_type - bitmask of notification flags
     struct notify_flags_type {
         uint32_t initialising       : 1;    // 1 if initialising and copter should not be moved
@@ -78,6 +80,7 @@ public:
     // without declaring the object
     static struct notify_flags_type flags;
     static struct notify_events_type events;
+    static AP_Relay* apm_relay;
 
     // initialisation
     void init(bool enable_external_leds);
@@ -90,6 +93,7 @@ public:
 
 private:
     static NotifyDevice* _devices[];
+    
 };
 
 #endif    // __AP_NOTIFY_H__

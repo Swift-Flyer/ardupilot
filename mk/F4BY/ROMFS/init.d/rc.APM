@@ -54,9 +54,12 @@ then
      echo "Created APM directory"
 fi
 
+
 set deviceC /dev/ttyS1
+set deviceE /dev/ttyS2
 set deviceD /dev/ttyS3
 set deviceE /dev/ttyS2
+
 
 if uorb start
 then

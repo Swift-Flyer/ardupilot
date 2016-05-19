@@ -50,7 +50,7 @@ void F4BYGPIO::init()
 
     _gpio_fmu_fd = open(F4BY_DEVICE_PATH, 0);
     if (_gpio_fmu_fd == -1) {
-        hal.scheduler->panic("Unable to open GPIO");
+    	hal.scheduler->panic("Unable to open GPIO");
     }
 
 
@@ -60,19 +60,15 @@ void F4BYGPIO::init()
 void F4BYGPIO::pinMode(uint8_t pin, uint8_t output)
 {
     switch (pin) {
-    case F4BY_GPIO_FMU_SERVO_PIN(0) ... F4BY_GPIO_FMU_SERVO_PIN(7):
-                uint32_t pinmask = 1U<<(pin-F4BY_GPIO_FMU_SERVO_PIN(0));
-        if (output) {
-            uint8_t old_value = read(pin);
-            if (old_value) {
-                ioctl(_gpio_fmu_fd, GPIO_SET_OUTPUT_HIGH, pinmask);
-            } else {
-                ioctl(_gpio_fmu_fd, GPIO_SET_OUTPUT_LOW, pinmask);
-            }
-        } else {
-            ioctl(_gpio_fmu_fd, GPIO_SET_INPUT, pinmask);
-        }
-        break;
+    case F4BY_GPIO_D1_PIN:
+		ioctl(_gpio_fmu_fd, output?GPIO_SET_OUTPUT:GPIO_SET_INPUT, GPIO_EXT_1);
+		break;
+	case F4BY_GPIO_D2_PIN:
+		ioctl(_gpio_fmu_fd, output?GPIO_SET_OUTPUT:GPIO_SET_INPUT, GPIO_EXT_2);
+		break;
+	case F4BY_GPIO_D3_PIN:
+		ioctl(_gpio_fmu_fd, output?GPIO_SET_OUTPUT:GPIO_SET_INPUT, GPIO_EXT_3);
+		break;
     }
 }
 
@@ -91,7 +87,7 @@ uint8_t F4BYGPIO::read(uint8_t pin) {
     switch (pin) {
 
 #ifdef GPIO_EXT_1
-        case F4BY_GPIO_EXT_FMU_RELAY1_PIN:{
+        case F4BY_GPIO_D1_PIN:{
             uint32_t relays = 0;
             ioctl(_gpio_fmu_fd, GPIO_GET, (unsigned long)&relays);
             return (relays & GPIO_EXT_1)?HIGH:LOW;
@@ -99,10 +95,18 @@ uint8_t F4BYGPIO::read(uint8_t pin) {
 #endif
 
 #ifdef GPIO_EXT_2
-        case F4BY_GPIO_EXT_FMU_RELAY2_PIN:{
+        case F4BY_GPIO_D2_PIN:{
             uint32_t relays = 0;
             ioctl(_gpio_fmu_fd, GPIO_GET, (unsigned long)&relays);
             return (relays & GPIO_EXT_2)?HIGH:LOW;
+        }
+#endif
+
+#ifdef GPIO_EXT_3
+        case F4BY_GPIO_D3_PIN:{
+            uint32_t relays = 0;
+            ioctl(_gpio_fmu_fd, GPIO_GET, (unsigned long)&relays);
+            return (relays & GPIO_EXT_3)?HIGH:LOW;
         }
 #endif
 
@@ -183,14 +187,20 @@ void F4BYGPIO::write(uint8_t pin, uint8_t value)
             break;
 
 #ifdef GPIO_EXT_1
-        case F4BY_GPIO_EXT_FMU_RELAY1_PIN:
+        case F4BY_GPIO_D1_PIN:
             ioctl(_gpio_fmu_fd, value==LOW?GPIO_CLEAR:GPIO_SET, GPIO_EXT_1);
             break;
 #endif
 
 #ifdef GPIO_EXT_2
-        case F4BY_GPIO_EXT_FMU_RELAY2_PIN:
+        case F4BY_GPIO_D2_PIN:
             ioctl(_gpio_fmu_fd, value==LOW?GPIO_CLEAR:GPIO_SET, GPIO_EXT_2);
+            break;
+#endif
+
+#ifdef GPIO_EXT_3
+        case F4BY_GPIO_D3_PIN:
+            ioctl(_gpio_fmu_fd, value==LOW?GPIO_CLEAR:GPIO_SET, GPIO_EXT_3);
             break;
 #endif
 
